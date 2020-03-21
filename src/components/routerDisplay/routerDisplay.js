@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Index from '../pages/index';
 
 export default class RouterDisplay extends Component {
