@@ -1,10 +1,16 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Idea Shop Check-In Client
+The goal of this project is to provide a new, faster interface to the [Idea Shop Check-in App](https://github.com/iit-ideashop/check-in-app) by
+turning the application into a single-page application, eliminating page loads and all of the associated database queries, as well as improving
+responsiveness and eliminating HTTP overhead by leveraging the Socket.IO server for all client-server communications.
 
-## Available Scripts
+This project is developed by student workers at the [Illinois Institute of Technology](https://iit.edu)'s [Idea Shop](https://wiki.ideashop.iit.edu/).
+It is licensed under the GNU Affero General Public License, v3.0.
+
+## Development Server
 
 In the project directory, you can run:
 
-### `yarn start`
+### `yarn start` or `npm start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -12,12 +18,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-### `yarn test`
+### `yarn test` or `npm test`
 
 Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+### `yarn build` or `npm build`
 
 Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
