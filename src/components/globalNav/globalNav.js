@@ -3,27 +3,26 @@ import { Navbar, Nav } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShieldAlt } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
 
 
 export default class GlobalNav extends Component {
     render() {
         return (
             <Navbar bg="dark" variant="dark" expand="sm" static="top">
-                {/* might need a package for this, shouldn't nest a-elements... */}
-                <Link to="/">
+                <LinkContainer to="/">
                     <Navbar.Brand>
                         {this.props.location} Check In
                     </Navbar.Brand>
-                </Link>
+                </LinkContainer>
                 <Nav className="mr-0 ml-auto">
-                    <Link to='/'>
+                    <LinkContainer to='/'>
                         <Nav.Link>
                             <FontAwesomeIcon icon={faShieldAlt} />
                             {' '}
                             Admin Tools
                         </Nav.Link>
-                    </Link>
+                    </LinkContainer>
                 </Nav>
             </Navbar>
         )
