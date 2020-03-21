@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Col } from 'react-bootstrap';
 import GlobalNav from '../globalNav/globalNav';
-import RouterDisplay from '../routerDisplay/routerDisplay';
 import './app.css';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import WhosHere from '../whosHere/whosHere';
+import { Index } from "../pages/index/index";
 
 
 export default class App extends Component {
@@ -13,7 +13,8 @@ export default class App extends Component {
         this.state = {
             location: {
                 name: "Assembly Space",
-                id: "2"
+                id: "2",
+                token: ""
             },
             labState: {
                 staffInLab: [],
@@ -23,7 +24,7 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-
+        
     }
 
     render() {
@@ -35,14 +36,42 @@ export default class App extends Component {
                             crossOrigin="anonymous" />
                 <Container fluid={true} id="page">
                     <GlobalNav location={this.state.location.name} />
-                    <Container fluid={true} id="layoutContainer">
-                        <Col sm="8" lg="10" id="content">
-                            <RouterDisplay />
-                        </Col>
-                        <Col sm="4" lg="2" id="sidebar">
-                            <WhosHere staff={this.state.labState.staffInLab} students={this.state.labState.studentsInLab} />
-                        </Col>
-                    </Container>
+                    <Switch>
+                        <Route path="/auth">
+                            <Container id="layoutContainer">
+                                <div id="content">
+                                    <div>
+                                        <h1>Auth page</h1>
+                                    </div>
+                                </div>
+                            </Container>
+                        </Route>
+                        <Route path="/"> {/* matches anything */}
+                            {/* if token is empty or null, redirect to /auth */}
+                            {/*!this.state.location.token && <Redirect to="/auth" />*/}
+                            <Container fluid={true} id="layoutContainer">
+                                <Col sm="8" lg="10" id="content">
+                                    <Switch>
+                                        <Route exact path="/">
+                                            <Index />
+                                        </Route>
+                                        <Route path="/tapResult">
+                                            {/*  */}
+                                        </Route>
+                                        <Route path="/register">
+                                            {/*  */}
+                                        </Route>
+                                        <Route path="/waiver">
+                                            {/*  */}
+                                        </Route>
+                                    </Switch>
+                                </Col>
+                                <Col sm="4" lg="2" id="sidebar">
+                                    <WhosHere staff={this.state.labState.staffInLab} students={this.state.labState.studentsInLab} />
+                                </Col>
+                            </Container>
+                        </Route>
+                    </Switch>
                 </Container>
             </BrowserRouter>
         )

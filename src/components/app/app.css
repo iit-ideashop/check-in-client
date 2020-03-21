@@ -8,6 +8,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     align-items: center;
+    justify-content: center;
 
     margin-bottom: 20px;
 
@@ -19,12 +20,24 @@
 }
 
 #sidebar {
+    display: flex;
     overflow-y: auto;
     overflow-x: hidden;
+    align-items: flex-start;
+    justify-content: center;
+
+    margin-bottom: 20px;
+    height: 100%;
 }
 
 #layoutContainer {
     padding-top: 20px;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 56px);
+}
+
+.full-height {
     height: calc(100% - 56px);
 }

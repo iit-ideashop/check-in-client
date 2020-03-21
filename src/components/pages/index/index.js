@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Jumbotron } from 'react-bootstrap'
 
-export default class Index extends Component {
+export class Index extends Component {
     render() {
         return (
             <Jumbotron className="align-center">
