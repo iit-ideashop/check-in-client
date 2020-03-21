@@ -1,3 +1,30 @@
-#app-container {
-    min-height: 100vh;
+#page {  
+    padding: 0 0;
+    height: 100vh;
+}
+
+#content {
+    display: flex;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-items: center;
+
+    margin-bottom: 20px;
+
+    height: 100%;
+}
+
+#content > * {
+    margin: auto;
+}
+
+#sidebar {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#layoutContainer {
+    padding-top: 20px;
+    display: flex;
+    height: calc(100% - 56px);
 }
