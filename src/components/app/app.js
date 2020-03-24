@@ -27,7 +27,7 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        localStorage.debug = 'socket.io-client:manager';
+        localStorage.debug = '*';
         const socket = io(this.endpoint)
 
         socket.on('connect', () => {
@@ -48,10 +48,39 @@ export default class App extends Component {
             }
         });
         socket.on('reconnect', () => {
-
+            socket.emit('reauth', {
+                'location_id': this.state.location.id,
+                'hardware_id': this.state.hardware_id,
+                'token': this.state.location.token
+            });
         });
         socket.on('auth_success', (data) => {
-            this.setState(data.initial_state);
+            localStorage.setItem("location_info", data.initial_state.location)
+            this.setState(() => data.initial_state);
+        });
+        socket.on('user_enter', (data) => { 
+            // add a user to state
+            this.setState((state) => {
+                return {
+                    labState: {
+                        activeUsers: [...state.labState.activeUsers, data.user],
+                        ...state.labState
+                    },
+                    ...state
+                };
+
+            });
+        });
+        socket.on('user_leave', (data) => {
+            this.setState((state) => {
+                return {
+                    labState: {
+                        activeUsers: state.labState.activeUsers.filter((user) => user.sid !== data.user.sid),
+                        ...state.labState
+                    },
+                    ...state
+                }
+            });
         });
         socket.connect();
     }
