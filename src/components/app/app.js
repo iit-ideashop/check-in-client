@@ -6,6 +6,7 @@ import GlobalNav from '../globalNav/globalNav';
 import { Index } from "../pages/index/index";
 import WhosHere from '../whosHere/whosHere';
 import './app.css';
+import Auth from '../pages/auth/auth';
 
 
 
@@ -14,75 +15,106 @@ export default class App extends Component {
         super();
         this.endpoint = 'http://localhost:5000/v2'
         this.state = {
-            hardware_id: 901,
             location: {
+                hardwareId: 901,
                 name: "Assembly Space",
-                id: 2,
+                locationId: 2,
                 token: ""
             },
             labState: {
                 activeUsers: []
+            },
+            appState: {
+                auth: {
+                    authInProgress: false,
+                    locationList: {},
+                    authErrorMessage: null
+                }
             }
         };
+        this.socket = io(this.endpoint)
+    }
+
+    componentDidUpdate() {
+        console.log(this.state);
     }
 
     componentDidMount() {
         localStorage.debug = '*';
-        const socket = io(this.endpoint)
 
-        socket.on('connect', () => {
+        this.socket.on('connect', () => {
             // if we already have a token, attempt a reauth
             if (this.state.location.token) {
-                socket.emit('reauth', {
-                    'location_id': this.state.location.id,
-                    'hardware_id': this.state.hardware_id,
+                this.socket.emit('reauth', {
+                    'location_id': this.state.location.locationId,
+                    'hardware_id': this.state.location.hardwareId,
                     'token': this.state.location.token
                 });
-            } else {
-                // replace with the actual secret (but don't forget to change it back!), at least until auth component is done
-                socket.emit('auth', {
-                    'location_id': 2,
-                    'hardware_id': 901,
-                    'secret': 'blarg'
-                })
             }
         });
-        socket.on('reconnect', () => {
-            socket.emit('reauth', {
-                'location_id': this.state.location.id,
-                'hardware_id': this.state.hardware_id,
+        this.socket.on('reconnect', () => {
+            this.socket.emit('reauth', {
+                'location_id': this.state.location.locationId,
+                'hardware_id': this.state.location.hardwareId,
                 'token': this.state.location.token
             });
         });
-        socket.on('auth_success', (data) => {
+        this.socket.on('auth_success', (data) => {
             localStorage.setItem("location_info", data.initial_state.location)
-            this.setState(() => data.initial_state);
+            this.setState((state) => ({
+                ...data.initial_state,
+                appState: {
+                    ...state.appState,
+                    auth: {
+                        ...state.appState.auth,
+                        authInProgress: false
+                    }
+                }
+            }));
         });
-        socket.on('user_enter', (data) => { 
+        this.socket.on('auth_error', (data) => {
+            this.setState((state) => ({
+                appState: { ...state.appState, auth: { ...state.appState.auth, authInProgress: false, authErrorMessage: data.message } } }));
+        });
+        this.socket.on('user_enter', (data) => { 
             // add a user to state
-            this.setState((state) => {
-                return {
+            this.setState((state) => ({
                     labState: {
+                        ...state.labState,
                         activeUsers: [...state.labState.activeUsers, data.user],
-                        ...state.labState
                     },
-                    ...state
-                };
-
-            });
+                })
+            );
         });
-        socket.on('user_leave', (data) => {
+        this.socket.on('user_leave', (data) => {
             this.setState((state) => {
                 return {
                     labState: {
-                        activeUsers: state.labState.activeUsers.filter((user) => user.sid !== data.user.sid),
-                        ...state.labState
-                    },
-                    ...state
+                        ...state.labState,
+                        activeUsers: state.labState.activeUsers.filter((user) => user.sid !== data.user.sid)
+                    }
                 }
             });
         });
-        socket.connect();
+        this.socket.on('location_list', (data) => {
+            this.setState((state) => { 
+                console.log(data);
+                const newState = {
+                    appState: {...state.appState, auth: { ...state.appState.auth, locationList: data } } };
+                console.log(newState);
+                return newState;
+            });
+        });
+        this.socket.connect();
+    }
+
+    sendAuthRequest(data) {
+        this.setState((state) => { return { appState: { ...state.appState, auth: { ...state.appState.auth, authInProgress: true } } }});
+        this.socket.emit('auth', {
+            'location_id': data.locationId,
+            'hardware_id': data.hardwareId,
+            'secret': data.secret
+        });
     }
 
     render() {
@@ -99,9 +131,12 @@ export default class App extends Component {
                             {this.state.location.token && <Redirect to="/" />}
                             <Container id="layoutContainer">
                                 <div id="content">
-                                    <div>
-                                        <h1>Auth page</h1>
-                                    </div>
+                                    <Auth
+                                        onFormSubmit={(data) => this.sendAuthRequest(data)}
+                                        // if auth isn't in progress and token is null or empty
+                                        enabled={!this.state.appState.auth.authInProgress}
+                                        locations={this.state.appState.auth.locationList}
+                                        error={this.state.appState.auth.authErrorMessage} />
                                 </div>
                             </Container>
                         </Route>
