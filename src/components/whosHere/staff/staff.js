@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Card } from 'react-bootstrap';
+import StaffUser from './staff-user/staff-user';
 
 
 export default class Staff extends Component {
@@ -9,7 +10,7 @@ export default class Staff extends Component {
                 <Card.Header as="h5">Staff</Card.Header>
                 <Card.Body>
                     <Card.Text>
-                        Staff goes Here
+                        <StaffUser/>
                     </Card.Text>
                 </Card.Body>
             </Card>
