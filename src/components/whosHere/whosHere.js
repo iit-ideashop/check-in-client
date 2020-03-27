@@ -14,10 +14,11 @@ export default class WhosHere extends Component {
         }
 
         return (
-            <div className="w-100">
+            <div class="w-100">
                 <h2 class="text-center">Currently Here</h2>
-                <div staff={staff}></div>
-                <div students={students}></div>
+                <React.Fragment>
+                    <Staff/>
+                </React.Fragment>
             </div>
         )
     }
