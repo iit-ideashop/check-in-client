@@ -79,6 +79,7 @@ export default class App extends Component {
         this.socket.on('user_enter', (data) => { 
             // add a user to state
             this.setState((state) => ({
+                    ...state,
                     labState: {
                         ...state.labState,
                         activeUsers: [...state.labState.activeUsers, data.user],
@@ -89,6 +90,7 @@ export default class App extends Component {
         this.socket.on('user_leave', (data) => {
             this.setState((state) => {
                 return {
+                    ...state,
                     labState: {
                         ...state.labState,
                         activeUsers: state.labState.activeUsers.filter((user) => user.sid !== data.user.sid)
@@ -161,7 +163,7 @@ export default class App extends Component {
                                     </Switch>
                                 </Col>
                                 <Col sm="4" lg="2" id="sidebar">
-                                    <WhosHere staff={this.state.labState.staffInLab} students={this.state.labState.studentsInLab} />
+                                    <WhosHere users={this.state.labState.activeUsers} />
                                 </Col>
                             </Container>
                         </Route>
