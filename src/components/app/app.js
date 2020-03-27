@@ -146,7 +146,7 @@ export default class App extends Component {
                             {/* if token is empty or null, redirect to /auth */}
                             {!this.state.location.token && <Redirect to="/auth" />}
                             <Container fluid={true} id="layoutContainer">
-                                <Col sm="8" lg="10" id="content">
+                                <Col sm={8} id="content">
                                     <Switch>
                                         <Route exact path="/">
                                             <Index />
@@ -162,7 +162,7 @@ export default class App extends Component {
                                         </Route>
                                     </Switch>
                                 </Col>
-                                <Col sm="4" lg="2" id="sidebar">
+                                <Col sm={4} id="sidebar">
                                     <WhosHere users={this.state.labState.activeUsers} />
                                 </Col>
                             </Container>
