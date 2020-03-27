@@ -31,6 +31,4 @@ export default class GlobalNav extends Component {
 
 GlobalNav.propTypes = {
     location: PropTypes.string.isRequired,
-    onGoHome: PropTypes.func.isRequired,
-    onGoAdmin: PropTypes.func.isRequired
 };

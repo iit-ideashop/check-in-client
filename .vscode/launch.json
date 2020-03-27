@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach to Firefox",
+            "type": "firefox",
+            "request": "attach",
+            "webRoot": "${workspaceFolder}/src",
+            "url": "http://localhost:3000/"
+        }
+    ]
+}
