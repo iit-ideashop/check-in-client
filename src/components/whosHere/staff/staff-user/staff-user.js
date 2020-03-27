@@ -7,11 +7,13 @@ export default class StaffUser extends Component {
             <Container>
                 <Row>
                     <Col sm={8}>
-                        <p class="lead">John Doe</p>
-                        <p class="text-muted">Developer</p>
+                        <div class="lead">John Doe</div>
+                        <div class="text-muted">Developer</div>
                     </Col>
-                    <Col sm={4}>
-                        <Image src="/logo192.png" roundedCircle fluid/>
+                    <Col sm={4} class="text-right">
+                        <div class="text-right">
+                            <Image width={48} height={48} src="/logo192.png"/>
+                        </div>
                     </Col>
                 </Row>
             </Container>

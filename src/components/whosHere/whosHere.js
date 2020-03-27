@@ -5,7 +5,7 @@ export default class WhosHere extends Component {
     render() {
         return (
             <div class="w-100">
-                <h1 class="text-center">Who&apos;s Here</h1>
+                <h2 class="text-center">Currently Here</h2>
                 <React.Fragment>
                     <Staff/>
                 </React.Fragment>
