@@ -7,7 +7,7 @@ export default class Staff extends Component {
     render() {
         return (
             <Card>
-                <Card.Header as="h5">Staff</Card.Header>
+                <Card.Header>Staff</Card.Header>
                 <Card.Body>
                     <Card.Text>
                         <StaffUser/>
