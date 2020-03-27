@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
+import Students from './student/students';
 
 export default class WhosHere extends Component {
     render() {
@@ -13,10 +14,12 @@ export default class WhosHere extends Component {
         }
 
         return (
-            <div className="w-100">
-                <h1>Who&apos;s Here</h1>
-                <div staff={staff}></div>
-                <div students={students}></div>
+            <div className="w-100 text-center">
+                <h1>Currently here</h1>
+                <div className="w-100 text-left">
+                    <div staff={staff}></div>
+                    <Students students={students} />
+                </div>
             </div>
         )
     }
