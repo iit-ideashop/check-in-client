@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Staff from '../whosHere/staff/staff';
 import { PropTypes } from 'prop-types'
 import Students from './student/students';
 
@@ -14,13 +15,11 @@ export default class WhosHere extends Component {
         }
 
         return (
-            <div className="w-100 text-center">
-                <h1>Currently here</h1>
-                <div className="w-100 text-left">
-                    <div staff={staff}></div>
-                    <Students students={students} />
-                </div>
-            </div>
+            <React.Fragment>
+                <div className="w-100 text-center">Currently here</h1>
+                <Staff staff={staff} />
+                <Students students={students} />
+            </React.Fragment>
         )
     }
 }
