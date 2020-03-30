@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import { Card, ListGroup } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 import { StudentUser } from './student-user/student-user'
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default class Students extends Component {
     render() {
         return (
-            <Card>
-                <Card.Header className="text-center">
-                    <FontAwesomeIcon icon={faUsers} /> Students
+            <Card className="w-100 mb-3">
+                <Card.Header>
+                    Students
                 </Card.Header>
                 {this.props.students &&
                     <ListGroup variant="flush">

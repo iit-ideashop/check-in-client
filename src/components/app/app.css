@@ -24,7 +24,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     align-items: flex-start;
-    justify-content: center;
+    flex-direction: column;
 
     margin-bottom: 20px;
     height: 100%;
