@@ -63,6 +63,40 @@ export default class App extends Component {
             localStorage.setItem("location_info", data.initial_state.location)
             this.setState((state) => ({
                 ...data.initial_state,
+                labState: {
+                    ...data.initial_state.labState,
+                    activeUsers: [...data.initial_state.labState.activeUsers, {
+                        'source': 'db-with-location',
+                        'sid': 20000000,
+                        'name': 'Jane Doe',
+                        'photo': null,
+                        'type': {
+                            'name': 'Lab Mentor',
+                            'level': 50
+                        },
+                        'missingTrainings': false
+                    }, {
+                        'source': 'db-with-location',
+                        'sid': 20000001,
+                        'name': 'John Doe',
+                        'photo': null,
+                        'type': {
+                            'name': 'User',
+                            'level': 0
+                        },
+                        'missingTrainings': false
+                    }, {
+                        'source': 'db-with-location',
+                        'sid': 20000002,
+                        'name': 'Tana Doe',
+                        'photo': null,
+                        'type': {
+                            'name': 'User',
+                            'level': 0
+                        },
+                        'missingTrainings': true
+                    }]
+                },
                 appState: {
                     ...state.appState,
                     auth: {
