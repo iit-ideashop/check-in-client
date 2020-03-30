@@ -16,7 +16,7 @@ export default class WhosHere extends Component {
 
         return (
             <React.Fragment>
-                <div className="w-100 text-center">Currently here</h1>
+                <div className="w-100 text-center">Currently here</div>
                 <Staff staff={staff} />
                 <Students students={students} />
             </React.Fragment>
