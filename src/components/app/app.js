@@ -7,6 +7,7 @@ import { Index } from "../pages/index/index";
 import WhosHere from '../whosHere/whosHere';
 import './app.css';
 import Auth from '../pages/auth/auth';
+import TapResult from '../pages/tapResult/tapResult';
 
 
 
@@ -183,13 +184,14 @@ export default class App extends Component {
                                 <Col sm={8} id="content">
                                     <Switch>
                                         <Route exact path="/">
+                                            {/* <TapResult result={TapResult.result.enter} /> */
                                             <Index />
                                         </Route>
                                         <Route path="/tapResult">
                                             {/*  */}
                                         </Route>
                                         <Route path="/register">
-                                            {/*  */}
+                                            {/* */}
                                         </Route>
                                         <Route path="/waiver">
                                             {/*  */}
