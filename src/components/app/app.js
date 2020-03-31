@@ -184,7 +184,7 @@ export default class App extends Component {
                                 <Col sm={8} id="content">
                                     <Switch>
                                         <Route exact path="/">
-                                            {/* <TapResult result={TapResult.result.enter} /> */
+                                            {/* <TapResult result={TapResult.result.enter} /> */}
                                             <Index />
                                         </Route>
                                         <Route path="/tapResult">
