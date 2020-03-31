@@ -44,6 +44,12 @@ export default class TapResult extends Component {
                 leadMessage = 'Do not enter';
                 lowerMessage = 'The lab is currently full. Please come back later or check with staff.';
                 break;
+            default:
+                icon = faCheck;
+                color = 'success';
+                leadMessage = '';
+                lowerMessage = '';
+                break;
         }
 
         return (
