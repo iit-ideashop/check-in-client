@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faExclamationCircle, faMinusCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import './tapResult.css'
 
-export default class TapResult extends Component {
+export class TapResult extends Component {
     render() {
         let icon, color, leadMessage, lowerMessage;
 
@@ -23,7 +23,7 @@ export default class TapResult extends Component {
                 icon = faExclamationCircle;
                 color = 'warning';
                 leadMessage = 'Welcome';
-                lowerMessage = 'You are missing the following safety trainings: ';
+                lowerMessage = 'You are missing the following safety trainings: ' + this.props.user.missingTrainings;
                 break;
             case TapResult.result.banned:
                 icon = faMinusCircle;
@@ -52,13 +52,13 @@ export default class TapResult extends Component {
                 break;
         }
 
-        return (
+        return this.props.visible && (
             <div className="w-100 text-center">
                 <div className={'circle rounded-circle bg-' + color}>
                     <FontAwesomeIcon icon={icon} className="circle-icon" />
                 </div>
                 <div className="display-4">{leadMessage}</div>
-                <div className="lead">Taylor Berg</div>
+                <div className="lead">{this.props.user.name}</div>
                 {lowerMessage &&
                 <React.Fragment>
                     <hr />
@@ -80,6 +80,7 @@ TapResult.result = {
 }
 
 TapResult.propTypes = {
-    result: PropTypes.number.isRequired,
-    user: PropTypes.object.isRequired
+    result: PropTypes.number,
+    user: PropTypes.object,
+    visible: PropTypes.bool
 }

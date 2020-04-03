@@ -11,9 +11,7 @@ export default class Staff extends Component {
                 <Card.Header>Staff</Card.Header>
                 <Card.Body>
                     {this.props.staff && this.props.staff.map(u => 
-                        <Card.Text key={u.sid}>
-                            <StaffUser user={u}/>
-                        </Card.Text>
+                        <StaffUser user={u} key={u.sid} />
                     )}
                 </Card.Body>
             </Card>
