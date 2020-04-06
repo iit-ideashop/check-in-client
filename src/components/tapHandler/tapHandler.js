@@ -104,11 +104,11 @@ export default class TapHandler extends Component {
     }
 
     sendCheckIn(user) {
-        this.context.emit('check_in', {user: user});
+        this.context.emit('check_in', {user: user, location: this.props.location});
     }
 
     sendCheckOut(user) {
-        this.context.emit('check_out', {user: user});
+        this.context.emit('check_out', {user: user, location: this.props.location});
     }
 
     showResult(user, result) {
