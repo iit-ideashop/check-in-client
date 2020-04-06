@@ -87,16 +87,16 @@ export default class TapHandler extends Component {
                         return;
                     case 'db-without-location':
                         // user is registered but doesn't have a record at this location
-                        this.reset();
+                        this.closeModal();
                         typeof(this.props.onPresentWaiver) === 'function' && this.props.onPresentWaiver(data.user);
                         return;
                     case 'acaps':
                         // user is not registered
-                        this.reset()
+                        this.closeModal()
                         typeof(this.props.onRegisterUser) === 'function' && this.props.onRegisterUser(data.user);
                         return;
                     default:
-                        this.reset()
+                        this.closeModal()
                         return;
                 }
             }
@@ -112,7 +112,7 @@ export default class TapHandler extends Component {
     }
 
     showResult(user, result) {
-        const closeTimer = setTimeout(() => this.reset(), 5000);
+        const closeTimer = setTimeout(() => this.closeModal(), 5000);
         this.setState(() => ({
             modalVisible: true,
             inProgress: false,
@@ -121,6 +121,12 @@ export default class TapHandler extends Component {
             user: user,
             closeTimer: closeTimer
         }))
+    }
+
+    closeModal() {
+        this.setState(() => ({
+            modalVisible: false
+        }));
     }
 
     reset() {
@@ -136,7 +142,7 @@ export default class TapHandler extends Component {
 
     render() {
         return (
-            <Modal show={this.state.modalVisible} size="lg">
+            <Modal show={this.state.modalVisible} size="lg" onExited={() => this.reset()}>
                 <Modal.Body>
                     <LoadingSpinner visible={this.state.inProgress} />
                     <TapResult visible={this.state.showResult} result={this.state.result} user={this.state.user} />
