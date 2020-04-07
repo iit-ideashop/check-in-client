@@ -45,6 +45,24 @@ export default class App extends Component {
 
         this.socket.on('connect', () => {
             // if we already have a token, attempt a reauth
+            if (localStorage.getItem("location_info")) {
+                let locationInfo;
+                try {
+                    locationInfo = JSON.parse(localStorage.getItem("location_info"));
+                } catch (e) {
+                    localStorage.removeItem("location_info");
+                    locationInfo = {
+                        hardwareId: 0,
+                        name: "",
+                        locationId: 0,
+                        token: ""
+                    }
+                }
+                this.setState(() => ({
+                    location: locationInfo
+                }));
+            }
+
             if (this.state.location.token) {
                 this.socket.emit('reauth', {
                     'location_id': this.state.location.locationId,
@@ -53,15 +71,9 @@ export default class App extends Component {
                 });
             }
         });
-        this.socket.on('reconnect', () => {
-            this.socket.emit('reauth', {
-                'location_id': this.state.location.locationId,
-                'hardware_id': this.state.location.hardwareId,
-                'token': this.state.location.token
-            });
-        });
+
         this.socket.on('auth_success', (data) => {
-            localStorage.setItem("location_info", data.initial_state.location)
+            localStorage.setItem("location_info", JSON.stringify(data.initial_state.location));
             this.setState((state) => ({
                 ...data.initial_state,
                 labState: {
