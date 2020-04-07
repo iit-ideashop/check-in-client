@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faExclamationCircle, faMinusCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
@@ -44,6 +45,10 @@ export class TapResult extends Component {
                 leadMessage = 'Do not enter';
                 lowerMessage = 'The lab is currently full. Please come back later or check with staff.';
                 break;
+            case TapResult.result.requireRegister:
+                return <Redirect to="/register" />
+            case TapResult.result.requireWaiver:
+                return <Redirect to="/waiver" />
             default:
                 icon = faCheck;
                 color = 'success';
@@ -52,7 +57,7 @@ export class TapResult extends Component {
                 break;
         }
 
-        return this.props.visible && (
+        return (
             <div className="w-100 text-center">
                 <div className={'circle rounded-circle bg-' + color}>
                     <FontAwesomeIcon icon={icon} className="circle-icon" />
@@ -76,7 +81,9 @@ TapResult.result = {
     missingTrainings: 3,
     banned: 4,
     deniedFireCapacity: 5,
-    deniedStaffRatio: 6
+    deniedStaffRatio: 6,
+    requireRegister: 7,
+    requireWaiver: 8
 }
 
 TapResult.propTypes = {

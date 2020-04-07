@@ -20,10 +20,12 @@ export default class TapHandler extends Component {
 
     componentDidMount() {
         this.context.on('tap', (data) => this.onTap(data));
+        this.context.on('check_in_result', (data) => this.onCheckInResult(data))
     }
 
     componentWillUnmount() {
         this.context.off('tap', (data) => this.onTap(data));
+        this.context.off('check_in_result', (data) => this.onCheckInResult(data))
     }
 
     onTap(data) {
@@ -50,6 +52,7 @@ export default class TapHandler extends Component {
         this.setState(() => ({
             modalVisible: true,
             inProgress: true,
+            showResult: false,
             user: data.user
         }));
 
@@ -77,12 +80,7 @@ export default class TapHandler extends Component {
                 // check to see if the server has a record for the student
                 switch (data.user.source) {
                     case 'db-with-location':
-                        // user is registered, check for missing trainings
-                        if (data.user.missingTrainings) {
-                            this.showResult(data.user, TapResult.result.missingTrainings)
-                        } else {
-                            this.showResult(data.user, TapResult.result.enter);
-                        }
+                        // send a check-in packet and wait for the response
                         this.sendCheckIn(data.user);
                         return;
                     case 'db-without-location':
@@ -101,6 +99,10 @@ export default class TapHandler extends Component {
                 }
             }
         }
+    }
+
+    onCheckInResult(data) {
+        this.showResult(data.user, TapResult.result[data.result]);
     }
 
     sendCheckIn(user) {
@@ -142,9 +144,9 @@ export default class TapHandler extends Component {
 
     render() {
         return (
-            <Modal show={this.state.modalVisible} size="lg" onExited={() => this.reset()}>
+            <Modal show={this.state.modalVisible} size="lg" onExited={() => this.reset()} centered>
                 <Modal.Body>
-                    <LoadingSpinner visible={this.state.inProgress} />
+                    <LoadingSpinner visible={this.state.inProgress} showText={true} />
                     <TapResult visible={this.state.showResult} result={this.state.result} user={this.state.user} />
                 </Modal.Body>
             </Modal>
