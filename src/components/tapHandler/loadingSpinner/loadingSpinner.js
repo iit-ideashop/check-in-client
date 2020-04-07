@@ -6,10 +6,10 @@ import PropTypes from 'prop-types';
 export class LoadingSpinner extends Component {
     render() {
         return this.props.visible && (
-            <React.Fragment>
+            <div className="w-100 text-center">
                 <div className="lds-dual-ring"></div>
-                {this.props.showText && <div className="lead">Please wait...</div>}
-            </React.Fragment>
+                {this.props.showText && <div className="display-4">Please wait...</div>}
+            </div>
         )
     }
 }
