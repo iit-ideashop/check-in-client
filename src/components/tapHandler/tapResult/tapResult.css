@@ -1,0 +1,16 @@
+.circle {
+    display: inline-block;
+    width: 256px;
+    text-align: center;
+    vertical-align: middle;
+    height: 256px;
+    font-size: 10em;
+    background: green;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.circle-icon {
+    display: inline-block;
+    vertical-align: middle;
+}

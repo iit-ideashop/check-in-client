@@ -7,7 +7,8 @@ import { Index } from "../pages/index/index";
 import WhosHere from '../whosHere/whosHere';
 import './app.css';
 import Auth from '../pages/auth/auth';
-
+import TapHandler from '../tapHandler/tapHandler';
+import SocketContext from '../socketContext';
 
 
 export default class App extends Component {
@@ -44,6 +45,24 @@ export default class App extends Component {
 
         this.socket.on('connect', () => {
             // if we already have a token, attempt a reauth
+            if (localStorage.getItem("location_info")) {
+                let locationInfo;
+                try {
+                    locationInfo = JSON.parse(localStorage.getItem("location_info"));
+                } catch (e) {
+                    localStorage.removeItem("location_info");
+                    locationInfo = {
+                        hardwareId: 0,
+                        name: "",
+                        locationId: 0,
+                        token: ""
+                    }
+                }
+                this.setState(() => ({
+                    location: locationInfo
+                }));
+            }
+
             if (this.state.location.token) {
                 this.socket.emit('reauth', {
                     'location_id': this.state.location.locationId,
@@ -52,15 +71,9 @@ export default class App extends Component {
                 });
             }
         });
-        this.socket.on('reconnect', () => {
-            this.socket.emit('reauth', {
-                'location_id': this.state.location.locationId,
-                'hardware_id': this.state.location.hardwareId,
-                'token': this.state.location.token
-            });
-        });
+
         this.socket.on('auth_success', (data) => {
-            localStorage.setItem("location_info", data.initial_state.location)
+            localStorage.setItem("location_info", JSON.stringify(data.initial_state.location));
             this.setState((state) => ({
                 ...data.initial_state,
                 labState: {
@@ -155,55 +168,61 @@ export default class App extends Component {
 
     render() {
         return (
-            <BrowserRouter>
-                <link rel="stylesheet"
-                            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-                            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-                            crossOrigin="anonymous" />
-                <Container fluid={true} id="page">
-                    <GlobalNav location={this.state.location.name} />
-                    <Switch>
-                        <Route path="/auth">
-                            {this.state.location.token && <Redirect to="/" />}
-                            <Container id="layoutContainer">
-                                <div id="content">
-                                    <Auth
-                                        onFormSubmit={(data) => this.sendAuthRequest(data)}
-                                        // if auth isn't in progress and token is null or empty
-                                        enabled={!this.state.appState.auth.authInProgress}
-                                        locations={this.state.appState.auth.locationList}
-                                        error={this.state.appState.auth.authErrorMessage} />
-                                </div>
-                            </Container>
-                        </Route>
-                        <Route path="/"> {/* matches anything */}
-                            {/* if token is empty or null, redirect to /auth */}
-                            {!this.state.location.token && <Redirect to="/auth" />}
-                            <Container fluid={true} id="layoutContainer">
-                                <Col sm={8} id="content">
-                                    <Switch>
-                                        <Route exact path="/">
-                                            <Index />
-                                        </Route>
-                                        <Route path="/tapResult">
-                                            {/*  */}
-                                        </Route>
-                                        <Route path="/register">
-                                            {/*  */}
-                                        </Route>
-                                        <Route path="/waiver">
-                                            {/*  */}
-                                        </Route>
-                                    </Switch>
-                                </Col>
-                                <Col sm={4} id="sidebar">
-                                    <WhosHere users={this.state.labState.activeUsers} />
-                                </Col>
-                            </Container>
-                        </Route>
-                    </Switch>
-                </Container>
-            </BrowserRouter>
+            <SocketContext.Provider value={this.socket}>
+                <BrowserRouter>
+                    <link rel="stylesheet"
+                                href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+                                integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+                                crossOrigin="anonymous" />
+                    <Container fluid={true} id="page">
+                        <GlobalNav location={this.state.location.name} />
+                        <Switch>
+                            <Route path="/auth">
+                                {this.state.location.token && <Redirect to="/" />}
+                                <Container id="layoutContainer">
+                                    <div id="content">
+                                        <Auth
+                                            onFormSubmit={(data) => this.sendAuthRequest(data)}
+                                            // if auth isn't in progress and token is null or empty
+                                            enabled={!this.state.appState.auth.authInProgress}
+                                            locations={this.state.appState.auth.locationList}
+                                            error={this.state.appState.auth.authErrorMessage} />
+                                    </div>
+                                </Container>
+                            </Route>
+                            <Route path="/"> {/* matches anything */}
+                                {/* if token is empty or null, redirect to /auth */}
+                                {!this.state.location.token && <Redirect to="/auth" />}
+                                <Container fluid={true} id="layoutContainer">
+                                    <Col sm={8} id="content">
+                                        <Switch>
+                                            <Route exact path="/">
+                                                <TapHandler 
+                                                    location={this.state.location} 
+                                                    userList={this.state.labState.activeUsers}
+                                                    disabled={false} />
+                                                <Index />
+                                            </Route>
+                                            <Route path="/tapResult">
+                                                {/*  */}
+                                            </Route>
+                                            <Route path="/register">
+                                                {/* */}
+                                            </Route>
+                                            <Route path="/waiver">
+                                                {/*  */}
+                                            </Route>
+                                        </Switch>
+                                    </Col>
+                                    <Col sm={4} id="sidebar">
+                                        <WhosHere users={this.state.labState.activeUsers} />
+                                    </Col>
+                                </Container>
+                            </Route>
+                        </Switch>
+                    </Container>
+                </BrowserRouter>
+            </SocketContext.Provider>
         )
     }
 }
