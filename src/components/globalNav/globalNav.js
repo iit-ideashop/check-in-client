@@ -15,8 +15,15 @@ export default class GlobalNav extends Component {
                         {this.props.location} Check In
                     </Navbar.Brand>
                 </LinkContainer>
+                <Nav>
+                    <LinkContainer to="/register">
+                        <Nav.Link>
+                            Test register page
+                        </Nav.Link>
+                    </LinkContainer>
+                </Nav>
                 <Nav className="mr-0 ml-auto">
-                    <LinkContainer to='/'>
+                    <LinkContainer to="/">
                         <Nav.Link>
                             <FontAwesomeIcon icon={faShieldAlt} />
                             {' '}

@@ -9,6 +9,7 @@ import './app.css';
 import Auth from '../pages/auth/auth';
 import TapHandler from '../tapHandler/tapHandler';
 import SocketContext from '../socketContext';
+import Register from '../pages/register/register';
 
 
 export default class App extends Component {
@@ -76,40 +77,6 @@ export default class App extends Component {
             localStorage.setItem("location_info", JSON.stringify(data.initial_state.location));
             this.setState((state) => ({
                 ...data.initial_state,
-                labState: {
-                    ...data.initial_state.labState,
-                    activeUsers: [...data.initial_state.labState.activeUsers, {
-                        'source': 'db-with-location',
-                        'sid': 20000000,
-                        'name': 'Jane Doe',
-                        'photo': null,
-                        'type': {
-                            'name': 'Lab Mentor',
-                            'level': 50
-                        },
-                        'missingTrainings': false
-                    }, {
-                        'source': 'db-with-location',
-                        'sid': 20000001,
-                        'name': 'John Doe',
-                        'photo': null,
-                        'type': {
-                            'name': 'User',
-                            'level': 0
-                        },
-                        'missingTrainings': false
-                    }, {
-                        'source': 'db-with-location',
-                        'sid': 20000002,
-                        'name': 'Tana Doe',
-                        'photo': null,
-                        'type': {
-                            'name': 'User',
-                            'level': 0
-                        },
-                        'missingTrainings': true
-                    }]
-                },
                 appState: {
                     ...state.appState,
                     auth: {
@@ -154,6 +121,12 @@ export default class App extends Component {
                 return newState;
             });
         });
+        this.socket.on('tap', (data) => {
+            this.setState(() => ({
+                currentUser: data.user,
+                currentCard: data.card
+            }));
+        })
         this.socket.connect();
     }
 
@@ -203,11 +176,8 @@ export default class App extends Component {
                                                     disabled={false} />
                                                 <Index />
                                             </Route>
-                                            <Route path="/tapResult">
-                                                {/*  */}
-                                            </Route>
                                             <Route path="/register">
-                                                {/* */}
+                                                <Register user={this.state.currentUser} card={this.state.currentCard} />
                                             </Route>
                                             <Route path="/waiver">
                                                 {/*  */}

@@ -4,6 +4,7 @@ import { Modal } from 'react-bootstrap';
 import { LoadingSpinner } from './loadingSpinner/loadingSpinner';
 import { TapResult } from './tapResult/tapResult';
 import { SocketContext } from '../socketContext';
+import { Redirect } from 'react-router-dom';
 
 export default class TapHandler extends Component {
     constructor(props) {
@@ -143,14 +144,21 @@ export default class TapHandler extends Component {
     }
 
     render() {
-        return (
-            <Modal show={this.state.modalVisible} size="lg" onExited={() => this.reset()} centered>
-                <Modal.Body>
-                    <LoadingSpinner visible={this.state.inProgress} showText={true} />
-                    <TapResult visible={this.state.showResult} result={this.state.result} user={this.state.user} />
-                </Modal.Body>
-            </Modal>
-        )
+        switch (this.state.result) {
+            case TapResult.result.requireRegister:
+                return <Redirect to="/register" />
+            case TapResult.result.requireWaiver:
+                return <Redirect to="/waiver" />
+            default:
+                return (
+                    <Modal show={this.state.modalVisible} size="lg" onExited={() => this.reset()} centered>
+                        <Modal.Body>
+                            <LoadingSpinner visible={this.state.inProgress} showText={true} />
+                            <TapResult visible={this.state.showResult} result={this.state.result} user={this.state.user} />
+                        </Modal.Body>
+                    </Modal>
+                )
+        }
     }
 }
 
