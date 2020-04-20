@@ -14,7 +14,7 @@ export class Register extends Component {
             name: "",
             emailPrefix: "",
             emailSuffix: "@hawk.iit.edu",
-            card: 123456,
+            card: 1,
             facility: 2508,
             layoutName: 'default'
         }
@@ -25,8 +25,8 @@ export class Register extends Component {
             this.setState((state, props) => ({
                 sid: props.user.sid,
                 name: props.user.name,
-                emailPrefix: props.user.email && props.user.email.split('@')[0],
-                emailSuffix: props.user.email && '@' + props.user.email.split('@')[1],
+                emailPrefix: props.user.email ? props.user.email.split('@')[0] : '',
+                emailSuffix: props.user.email ? '@' + props.user.email.split('@')[1] : '@hawk.iit.edu',
                 card: props.card.cardnum,
                 facility: props.card.facility
             }));
@@ -175,19 +175,6 @@ export class Register extends Component {
                                     onChange={(e) => this.onEmailPrefixChange(e)}
                                     onFocus={() => this.onChangeFocus('emailPrefix')}
                                     required />
-                                    {/*<Form.Control
-                                        as="select"
-                                        className="custom-select"
-                                        value={this.state.emailSuffix}
-                                        onChange={(e) => this.onEmailSuffixChange(e)}>
-                                        <option>@hawk.iit.edu</option>
-                                        <option>@iit.edu</option>
-                                        <option>@id.iit.edu</option>
-                                        <option>@kaplan.iit.edu</option>
-                                        <option>@stuart.iit.edu</option>
-                                        <option>@kentlaw.iit.edu</option>
-                                        <option>@vandercook.edu</option>
-                                    </Form.Control>*/}
                                 <DropdownButton
                                     as={InputGroup.Append}
                                     variant="dark"
